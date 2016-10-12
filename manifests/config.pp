@@ -26,11 +26,14 @@ class sshd::config (
   # Also support ECDSA keys on RH >= 7
   if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
     $_pam_source = 'puppet:///modules/sshd/sshd'
-    $hostkey = 'HostKey /etc/ssh/ssh_host_ecdsa_key'
+    $hostkeys = ['HostKey /etc/ssh/ssh_host_ecdsa_key',
+                'HostKey /etc/ssh/ssh_host_ed25519_key',
+                'HostKey /etc/ssh/ssh_host_rsa_key']
 
   } else {
     $_pam_source = 'puppet:///modules/sshd/sshd.rh6'
-    $hostkey = 'HostKey /etc/ssh/ssh_host_dsa_key'
+    $hostkeys = ['HostKey /etc/ssh/ssh_host_dsa_key',
+                'HostKey /etc/ssh/ssh_host_rsa_key']
   }
 
   if $provider == 'ldap' {
