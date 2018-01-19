@@ -23,10 +23,17 @@ class sshd::config (
   }
 
   # Support oddjob on RH>= 7 for selinux
+  # Also support ECDSA keys on RH >= 7
   if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
     $_pam_source = 'puppet:///modules/sshd/sshd'
+    $hostkeys = ['HostKey /etc/ssh/ssh_host_ecdsa_key',
+                'HostKey /etc/ssh/ssh_host_ed25519_key',
+                'HostKey /etc/ssh/ssh_host_rsa_key']
+
   } else {
     $_pam_source = 'puppet:///modules/sshd/sshd.rh6'
+    $hostkeys = ['HostKey /etc/ssh/ssh_host_dsa_key',
+                'HostKey /etc/ssh/ssh_host_rsa_key']
   }
 
   if $provider == 'ldap' {
