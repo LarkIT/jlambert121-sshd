@@ -55,7 +55,7 @@ class sshd::config (
 
   if str2bool($::selinux) {
     selinux::port { 'allow-ssh-port':
-      context  => 'ssh_port_t',
+      seltype  => 'ssh_port_t',
       protocol => 'tcp',
       port     => $port,
     }
